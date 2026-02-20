@@ -1,0 +1,62 @@
+#!/usr/bin/env bash
+# erde — automated trading agent for hyperliquid perps.
+# Run from your erde installation directory.
+# Add to PATH: export PATH="$PATH:/path/to/erde/bin"
+
+set -euo pipefail
+
+CYAN="\033[36m"
+YELLOW="\033[33m"
+RESET="\033[0m"
+
+info() { echo -e "  ${CYAN}→${RESET} $1"; }
+warn() { echo -e "  ${YELLOW}!${RESET} $1"; }
+
+# ── Installation detection ────────────────────────────────────────────────────
+# All three must be true (checked in CWD, not the script location)
+
+if [ ! -f "package.json" ] || [ ! -d "node_modules" ] || [ ! -d "hyperliquid-trader/src" ]; then
+  echo ""
+  echo -e "  ${YELLOW}!${RESET} No erde installation found in the current directory."
+  echo "    → Run this command from your erde installation directory."
+  echo ""
+  read -rp "  Install erde here from the latest release? [y/N]: " choice
+  echo ""
+  if [[ "$choice" =~ ^[Yy]$ ]]; then
+    info "Cloning erde from GitHub..."
+    git clone https://github.com/your-github-org/hl-trader .
+    echo ""
+    bash install.sh
+  else
+    info "To install manually:"
+    info "  git clone https://github.com/your-github-org/hl-trader"
+    info "  cd hl-trader && bash install.sh"
+    echo ""
+  fi
+  exit 0
+fi
+
+# ── Banner ────────────────────────────────────────────────────────────────────
+
+cat <<'BANNER'
+
+  ███████╗██████╗ ██████╗ ███████╗
+  ██╔════╝██╔══██╗██╔══██╗██╔════╝
+  █████╗  ██████╔╝██║  ██║█████╗
+  ██╔══╝  ██╔══██╗██║  ██║██╔══╝
+  ███████╗██║  ██║██████╔╝███████╗
+  ╚══════╝╚═╝  ╚═╝╚═════╝ ╚══════╝
+
+BANNER
+
+# ── Start server (always restart to ensure it's from this installation) ───────
+# server/index.ts handles killing any existing process on :3000 via PID file + lsof
+
+info "Starting web dashboard on :3000..."
+npm run server >/tmp/erde-server.log 2>&1 &
+disown
+sleep 1
+
+# ── Launch agent (forward all flags) ─────────────────────────────────────────
+
+exec npx tsx hyperliquid-trader/src/agent.ts "$@"
