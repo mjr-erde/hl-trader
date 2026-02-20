@@ -1,0 +1,86 @@
+# Secrets — NEVER commit these
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.keystore
+*.mnemonic
+secrets/
+
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.venv/
+venv/
+*.egg-info/
+dist/
+build/
+
+# Node
+node_modules/
+.npm
+*.tgz
+
+# Build artifacts
+build/
+dist/
+out/
+src/lib/*.js
+src/lib/*.d.ts
+*.tsbuildinfo
+
+# Monorepo package outputs
+packages/*/dist/
+packages/*/build/
+*.o
+*.a
+*.dylib
+
+# IDE / Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Testing / Coverage
+.coverage
+htmlcov/
+.pytest_cache/
+coverage/
+
+# Trader data (local positions)
+.trader/
+.trader-test/
+
+# Trading profile (personal settings saved by wizard)
+.trading-profile.json
+
+# Agent trading logs (ignore log files, keep process-logs.sh)
+logs/*.log
+logs/processed-*
+logs/_archive*.log
+
+# First-run install marker
+.erde-installed
+
+# Tauri (removed but guard in case build artifacts linger)
+src-tauri/target/
+
+# ML scorer: venv, trained model, and training data (large, machine-specific)
+hyperliquid-trader/ml/.venv/
+hyperliquid-trader/ml/model/*.pkl
+hyperliquid-trader/ml/model/*.json
+hyperliquid-trader/ml/data/*.jsonl
+
+# Hyperliquid transaction exports (may contain sensitive data)
+hyperliquid-tx-*.json
+hyperliquid-tx-*.csv
+
+# OS
+Thumbs.db
+.DS_Store
