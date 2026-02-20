@@ -1,0 +1,26 @@
+{
+  "name": "hyperliquid-trader",
+  "version": "0.1.0",
+  "description": "Secure CLI for real trading on Hyperliquid",
+  "private": true,
+  "type": "module",
+  "bin": {
+    "hyperliquid-trader": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/cli.js",
+    "dev": "tsx src/cli.ts"
+  },
+  "dependencies": {
+    "@nktkas/hyperliquid": "^0.31.0",
+    "commander": "^12.1.0",
+    "dotenv": "^17.3.1",
+    "viem": "^2.21.0"
+  },
+  "devDependencies": {
+    "@types/node": "^25.2.3",
+    "tsx": "^4.19.2",
+    "typescript": "~5.6.2"
+  }
+}
